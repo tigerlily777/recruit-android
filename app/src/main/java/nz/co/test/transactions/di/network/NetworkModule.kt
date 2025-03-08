@@ -6,6 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nz.co.test.transactions.data.services.TransactionsService
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
@@ -19,12 +21,29 @@ class NetworkModule {
     fun provideMoshi(): Moshi =
         Moshi.Builder().build()
 
+
     @Provides
     @Singleton
-    fun providesRetrofit(moshi: Moshi): Retrofit =
+    fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        return logging
+    }
+
+    @Provides
+    @Singleton
+    fun providesOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+        OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
+    @Provides
+    @Singleton
+    fun providesRetrofit(moshi: Moshi, okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://gist.githubusercontent.com/")
             .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .client(okHttpClient)
             .build()
 
     @Provides

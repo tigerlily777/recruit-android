@@ -4,6 +4,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'com.google.devtools.ksp'
     id 'com.google.dagger.hilt.android'
 }
 
@@ -47,13 +48,12 @@ dependencies {
     implementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
-    def kotlin_version = '2.0.0'
+    def kotlin_version = '2.1.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.13.1'
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
     def fragment_version = '1.8.0'
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
@@ -61,6 +61,13 @@ dependencies {
     def retrofit_version = '2.11.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.12.0"
+
+    def moshi_version = '1.15.1'
+    implementation "com.squareup.moshi:moshi:$moshi_version"
+    implementation "com.squareup.moshi:moshi-kotlin:$moshi_version"
+    implementation "com.squareup.moshi:moshi-adapters:1.15.1"
+    ksp "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
