@@ -9,13 +9,15 @@ import javax.inject.Inject
 class TransactionListRepositoryImpl @Inject constructor(
     private val transactionsService: TransactionsService
 ): TransactionListRepository {
-    private var transactionList: List<Transaction>? = emptyList()
+    private var transactionList: List<Transaction> = emptyList()
     override suspend fun fetchTransactionList(): List<Transaction> {
         return withContext(Dispatchers.IO) {
             val response = transactionsService.retrieveTransactions()
             if (response.isSuccessful) {
-                transactionList = response.body()
-                response.body()?: emptyList()
+                response.body()?.let {
+                    transactionList = it
+                    it
+                } ?: emptyList()
             } else {
                 response.errorBody()?.let {
                     throw Exception(it.string())
