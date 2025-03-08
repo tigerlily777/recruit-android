@@ -26,4 +26,8 @@ class TransactionListRepositoryImpl @Inject constructor(
             }
         }
     }
+
+    override fun getTransactionListItemById(transactionId: Int): Transaction? {
+        return transactionList.find { it.id == transactionId }
+    }
 }

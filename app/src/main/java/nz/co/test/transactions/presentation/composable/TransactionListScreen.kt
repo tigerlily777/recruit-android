@@ -1,5 +1,6 @@
 package nz.co.test.transactions.presentation.composable
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,7 +28,8 @@ import java.math.BigDecimal
 
 @Composable
 fun TransactionListScreen(
-    viewModel: TransactionListViewModel = hiltViewModel()
+    viewModel: TransactionListViewModel = hiltViewModel(),
+    onTransactionClick: (Int) -> Unit = {}
 ) {
     val transactionListState by viewModel.transactionListUiState.collectAsState()
 
@@ -42,7 +44,8 @@ fun TransactionListScreen(
 
         is TransactionListState.Success -> {
             TransactionList(
-                transactionList = (transactionListState as TransactionListState.Success).formattedTransactionList
+                transactionList = (transactionListState as TransactionListState.Success).formattedTransactionList,
+                onTransactionClick = onTransactionClick
             )
         }
 
@@ -54,13 +57,19 @@ fun TransactionListScreen(
 
 @Composable
 fun TransactionList(
-    transactionList: List<FormattedTransaction>
+    transactionList: List<FormattedTransaction>,
+    onTransactionClick: (Int) -> Unit
 ) {
     LazyColumn {
         item(transactionList) {
             transactionList.forEach { transaction ->
                 TransactionListItem(
-                    formattedTransaction = transaction
+                    formattedTransaction = transaction,
+                    modifier = Modifier.clickable {
+                        onTransactionClick(
+                            transaction.id
+                        )
+                    }
                 )
             }
         }
