@@ -1,12 +1,13 @@
 package nz.co.test.transactions.data.model
 
-import java.math.BigDecimal
-import java.time.OffsetDateTime
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 data class Transaction(
-    val id: Int,
-    val transactionDate: OffsetDateTime,
-    val summary: String,
-    val debit: BigDecimal,
-    val credit: BigDecimal
+    @Json(name = "id") val id: Int,
+    @Json(name = "transactionDate") val transactionDate: String,
+    @Json(name = "summary") val summary: String,
+    @Json(name = "debit") val debit: String,
+    @Json(name = "credit") val credit: String
 )
