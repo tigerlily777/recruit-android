@@ -30,7 +30,7 @@ class TransactionListViewModel @Inject constructor(
 
                     is TransactionListState.Success -> {
                         _transactionListUiState.value = TransactionListState.Success(
-                            state.transactionList
+                            state.formattedTransactionList
                         )
                     }
 
